@@ -7,7 +7,7 @@ import torch
 from torch import nn
 from torchvision.models import efficientnet_b0, EfficientNet_B0_Weights
 
-from config import N_MOUSE_X, N_MOUSE_Y, IMG_HEIGHT, IMG_WIDTH
+from config import N_MOUSE_X, N_MOUSE_Y, IMG_HEIGHT, IMG_WIDTH, USE_SEQUENCE_LSTM
 
 
 class ConvLSTMCell2D(nn.Module):
@@ -87,11 +87,13 @@ class EfficientNetLSTMBCModel(nn.Module):
         lstm_layers: int = 2,
         convlstm_hidden: int = 256,
         pretrained: bool = True,
+        use_sequence_lstm: bool = USE_SEQUENCE_LSTM,
     ):
         super().__init__()
         self.convlstm_hidden = convlstm_hidden
         self.lstm_hidden_size = lstm_hidden_size
         self.lstm_num_layers = lstm_layers
+        self.use_sequence_lstm = use_sequence_lstm
         self.n_mouse_x = N_MOUSE_X
         self.n_mouse_y = N_MOUSE_Y
 
@@ -102,14 +104,19 @@ class EfficientNetLSTMBCModel(nn.Module):
         self.feat_reduce = nn.Conv2d(192, convlstm_hidden, 1)
         self.convlstm = ConvLSTM2D(convlstm_hidden, convlstm_hidden, kernel_size=3)
         self.pool = nn.AdaptiveAvgPool2d(1)
-        self.lstm = nn.LSTM(
-            input_size=convlstm_hidden,
-            hidden_size=lstm_hidden_size,
-            num_layers=lstm_layers,
-            batch_first=True,
-            dropout=0.2,
-        )
-        self.fc1 = nn.Linear(lstm_hidden_size, 256)
+        if self.use_sequence_lstm:
+            self.lstm = nn.LSTM(
+                input_size=convlstm_hidden,
+                hidden_size=lstm_hidden_size,
+                num_layers=lstm_layers,
+                batch_first=True,
+                dropout=0.2,
+            )
+            fc_in_dim = lstm_hidden_size
+        else:
+            self.lstm = None
+            fc_in_dim = convlstm_hidden
+        self.fc1 = nn.Linear(fc_in_dim, 256)
         self.relu = nn.ReLU(inplace=True)
         self.fc_mouse_x = nn.Linear(256, N_MOUSE_X)
         self.fc_mouse_y = nn.Linear(256, N_MOUSE_Y)
@@ -139,8 +146,12 @@ class EfficientNetLSTMBCModel(nn.Module):
         x = self.pool(x)  # (B*T, C, 1, 1)
         x = x.view(b2, t2, c2)
 
-        lstm_hidden = hidden[1] if hidden is not None else None
-        lstm_out, lstm_next = self.lstm(x, lstm_hidden)
+        lstm_next = None
+        if self.use_sequence_lstm:
+            lstm_hidden = hidden[1] if hidden is not None else None
+            lstm_out, lstm_next = self.lstm(x, lstm_hidden)
+        else:
+            lstm_out = x
         h = self.relu(self.fc1(lstm_out))
 
         mouse_x_logits = self.fc_mouse_x(h)

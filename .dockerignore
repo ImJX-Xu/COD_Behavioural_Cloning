@@ -1,0 +1,19 @@
+.git
+.gitignore
+
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+
+# Local artifacts (kept out of image; mount as volumes instead)
+COD_BC/data/
+COD_BC/logs/
+COD_BC/models/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+

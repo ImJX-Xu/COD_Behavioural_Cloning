@@ -24,6 +24,11 @@ DEBUG_PRINT_MOUSE_INFER = True
 # 图像与模型风格：当前仅保留彩色 EfficientNet + ConvLSTM2D（旧灰度堆叠方案已移除）
 USE_EFFICIENTNET = True
 
+# 序列级 LSTM 开关：
+# - True: 使用 EfficientNet + ConvLSTM2D + LSTM 的两级时序结构
+# - False: 只使用 EfficientNet + ConvLSTM2D（更轻量，适合做 ablation 或数据较少时）
+USE_SEQUENCE_LSTM = False
+
 # 拼接后单帧尺寸（高×宽）：主画面 320×90 + 小地图 90×90 → 410×90
 IMG_HEIGHT = 90
 IMG_WIDTH = 410
@@ -37,13 +42,12 @@ SEQ_LEN = 48     # 序列长度（原 Example 为 96；改为 48 以降低显存
 
 # 鼠标离散档位：与 Example (Counter-Strike_Behavioural_Cloning) 完全一致，中间密、两边疏
 MOUSE_X_POSSIBLES = [
-    -1000.0, -500.0, -300.0, -200.0, -100.0, -60.0, -30.0, -20.0, -10.0,
-    -4.0, -2.0, -0.0, 2.0, 4.0, 10.0, 20.0, 30.0, 60.0, 100.0,
-    200.0, 300.0, 500.0, 1000.0,
+    -289.3, -72.5, -54.4, -36.3, -25.0, -18.1, -8.1, -4.0, -2.0, -1.0, -0.0, 0.0,
+    0.0, 1.0, 2.0, 4.0, 8.1, 18.1, 25.0, 36.3, 54.4, 72.5, 289.3,
 ]
 MOUSE_Y_POSSIBLES = [
-    -200.0, -100.0, -50.0, -20.0, -10.0, -4.0, -2.0, -0.0,
-    2.0, 4.0, 10.0, 20.0, 50.0, 100.0, 200.0,
+    -28.6, -9.0, -6.0, -3.0, -2.0, -1.0, -0.0, 0.0, 0.0, 1.0, 2.0, 3.0,
+    6.0, 9.0, 28.6,
 ]
 N_MOUSE_X = len(MOUSE_X_POSSIBLES)
 N_MOUSE_Y = len(MOUSE_Y_POSSIBLES)

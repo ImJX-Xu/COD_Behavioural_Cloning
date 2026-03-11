@@ -285,12 +285,14 @@ Dataset 返回：
 
 ## 模型结构：`src/model.py`
 
-只保留新方案：**EfficientNet + ConvLSTM2D + LSTM**。
+
+方案：**EfficientNet + ConvLSTM2D + LSTM**。
 
 - Backbone：截断版 `efficientnet_b0`，输出 192 通道中间特征图；
 - ConvLSTM：在特征图上做时序卷积 LSTM；
 - AdaptiveAvgPool2d + LSTM：将每帧特征池化到 256 维，再经 2 层 LSTM 做时序建模；
 - 多头输出：
+
   - `mouse_x_logits`: `[B, T, N_MOUSE_X]`
   - `mouse_y_logits`: `[B, T, N_MOUSE_Y]`
   - `mouse_buttons_logits`: `[B, T, 2]`
