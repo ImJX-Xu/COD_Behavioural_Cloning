@@ -1,0 +1,18 @@
+COD_Behavioural_Cloning (COD_BC) - License
+
+本仓库为衍生项目，基于以下原仓库进行二次开发：
+
+  原项目：Counter-Strike_Behavioural_Cloning
+  地址：  https://github.com/TeaPearce/Counter-Strike_Behavioural_Cloning
+  作者：  Tim Pearce, Jun Zhu
+
+本衍生版本继承原项目的使用条款：
+
+  - 原项目仅授权用于个人项目与开源研究（personal projects and open-sourced research）。
+  - 原项目未授予任何形式的商业使用许可（we do not grant a license for its commercial use in any form）。
+  - 如有疑问，请与原项目作者联系取得许可（if in doubt, please contact them for permission）。
+
+本仓库中由衍生作者新增或修改的代码，其版权归衍生项目维护者（ImJX-Xu / COD_Behavioural_Cloning）所有，但使用本仓库时仍须遵守上述原项目条款。
+
+Derivative project: COD_Behavioural_Cloning
+Repository: https://github.com/ImJX-Xu/COD_Behavioural_Cloning

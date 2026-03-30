@@ -45,14 +45,24 @@ COD_BC/
 │   ├── evaluator.py       # 离线评估工具
 │   └── data_info.py       # 数据详情与鼠标采样统计
 ├── docs/
-│   └── 训练流程.md         # 更详细的设计说明（中文）
+│   ├── 训练流程.md                      # 完整流程设计说明
+│   └── 项目全链路技术说明_面试版.md      # 面试技术说明
+├── mouse_bins.py          # 鼠标档位数据驱动推荐工具
 ├── main.py                # CLI + 交互式菜单入口
 └── requirements.txt       # 依赖列表
 ```
 
-顶层还提供了一个独立脚本：
+仓库根目录结构：
 
-- `mouse_bins.py`：从已有数据自动推荐 `MOUSE_X/Y_POSSIBLES` 挡位列表。
+```text
+BC_COD/
+├── COD_BC/        # 主项目包（见上）
+├── docs/          # 仓库级开发笔记
+├── references/    # 参考论文 PDF
+├── README.md
+├── Dockerfile
+└── .gitignore
+```
 
 ---
 

@@ -177,7 +177,7 @@ def main():
     parser.add_argument(
         "--config",
         type=str,
-        default=str(Path(__file__).resolve().parent / "COD_BC" / "config.py"),
+        default=str(Path(__file__).resolve().parent / "config.py"),
         help="Path to COD_BC/config.py (default: ./COD_BC/config.py)",
     )
     parser.add_argument(
